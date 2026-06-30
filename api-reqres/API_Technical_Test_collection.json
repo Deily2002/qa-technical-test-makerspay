@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "88ba46cf-f263-4a7b-a1fd-c312caf3b46e",
+		"name": "API_Technical_Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27000230"
+	},
+	"item": [
+		{
+			"name": "Crear Usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code es 201 - Creado en MockAPI\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.globals.set(\"userId_mock\", jsonData.id); \r",
+							"pm.globals.set(\"name_enviado\", jsonData.name);\r",
+							"pm.globals.set(\"job_enviado\", jsonData.job);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Test User\",\r\n  \"job\": \"Automation Engineer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://6a4406036dba791499abc395.mockapi.io/api/v1/users",
+					"protocol": "https",
+					"host": [
+						"6a4406036dba791499abc395",
+						"mockapi",
+						"io"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar Usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code es 200 - Usuario encontrado\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verificar que nombre y trabajo coinciden con el POST\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var nombreEsperado = pm.globals.get(\"name_enviado\");\r",
+							"    var trabajoEsperado = pm.globals.get(\"job_enviado\");\r",
+							"\r",
+							"    pm.expect(jsonData.name).to.equal(nombreEsperado);\r",
+							"    pm.expect(jsonData.job).to.equal(trabajoEsperado);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://6a4406036dba791499abc395.mockapi.io/api/v1/users/1",
+					"protocol": "https",
+					"host": [
+						"6a4406036dba791499abc395",
+						"mockapi",
+						"io"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code es 200 - Actualización exitosa\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar que los datos cambiaron\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.name).to.equal(\"Test User Updated\");\r",
+							"    pm.expect(jsonData.job).to.equal(\"Senior Automation Engineer\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Test User Updated\",\r\n  \"job\": \"Senior Automation Engineer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://6a4406036dba791499abc395.mockapi.io/api/v1/users/1",
+					"protocol": "https",
+					"host": [
+						"6a4406036dba791499abc395",
+						"mockapi",
+						"io"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code es 200 - Eliminación exitosa\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://6a4406036dba791499abc395.mockapi.io/api/v1/users/1",
+					"protocol": "https",
+					"host": [
+						"6a4406036dba791499abc395",
+						"mockapi",
+						"io"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
